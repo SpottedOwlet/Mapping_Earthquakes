@@ -79,11 +79,22 @@ L.control.layers(baseMaps).addTo(map);
 // Accessing the Toronto airline routes GeoJSON URL
 let torontoData = "https://raw.githubusercontent.com/SpottedOwlet/Mapping_Earthquakes/main/torontoRoutes.json";
 
+// define your style
+let myStyle = {
+    color: "purple",
+    weight: 2
+}
+
 // grabbing geoJSON data
 d3.json(torontoData).then(function(data){
     console.log(data);
     // creating a geoJSON layer with the retrieved data
-    L.geoJSON(data).addTo(map);
+    L.geoJSON(data,{
+        style: myStyle,
+        onEachFeature: function(feature, layer){
+            layer.bindPopup("<h3> Airline: " + feature.properties.airline + "</h3> <hr> <h3> Destination: " + feature.properties.dst + "</h3>");
+        }
+    }).addTo(map);
 });
 
 
@@ -91,8 +102,3 @@ d3.json(torontoData).then(function(data){
 // streets.addTo(map);
 
 
-// ,{
-//     onEachFeature: function(feature, layer){
-//         layer.bindPopup("<h3> Airport code: " + feature.properties.faa + "</h3> <hr> <h3> Airport Name: " + feature.properties.name + "</h3>");
-//     }
-// }
